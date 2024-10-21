@@ -33,3 +33,11 @@ This project is licensed under the Apache 2.0 License. See the LICENSE file for 
 
 ## Author
 Developed and maintained with ❤️ by [EscapedShadows](https://escapedshadows.com).
+
+## Currently available Flags:
+- LGBTQ+ Community (Rainbow Flag)
+- Transgender
+- Bisexual
+- Pansexual
+- Asexual
+- Non-Binary
