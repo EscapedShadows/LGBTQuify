@@ -23,7 +23,7 @@ flags = {
     "pansexual": "Pansexual",
     "lesbian": "Lesbian",
     "sapphic": "Sapphic",
-    "gay_men": "Gay Men",
+    "gay": "Gay",
     "omnisexual": "Omnisexual",
     "polysexual": "Polysexual",
     "skoliosexual": "Skoliosexual",
