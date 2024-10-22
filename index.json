@@ -1,15 +1,22 @@
 {
     "folders": [
-        "flags"
+        "flags",
+        "static",
+        "modules"
     ],
 
     "files": [
         "version.txt",
+        "README.md",
+        "LICENSE",
+
         "flags/asexual.svg",
         "flags/bisexual.svg",
         "flags/non_binary.svg",
         "flags/pansexual.svg",
         "flags/rainbow_flag.svg",
-        "flags/transgender.svg"
+        "flags/transgender.svg",
+
+        "README"
     ]
 }
