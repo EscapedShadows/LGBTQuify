@@ -1,4 +1,4 @@
-# LGBTQuify V1.3.2
+# LGBTQuify V2.0.0
  
 ### LGBTQUify is a project designed to bring pride to Linux by allowing users to customize their systems with pride-themed elements. From the Plymouth boot splash to icon themes, LGBTQUify lets you proudly display your identity on your desktop.
 
