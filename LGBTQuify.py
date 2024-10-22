@@ -2,6 +2,11 @@ import os
 import sys
 import requests
 from colorama import Fore, init
+from InquirerPy import prompt, inquirer
+from InquirerPy.base.control import Choice
+from InquirerPy.separator import Separator
+import time
+import shutil
 
 init(autoreset=True)
 
@@ -71,6 +76,9 @@ class LGBTQUifyUpdater:
         self.download_files(index)
 
 if __name__ == "__main__":
+    """
+    Version / Update checking
+    """
     updater = LGBTQUifyUpdater(base_url="https://raw.githubusercontent.com/EscapedShadows/LGBTQuify/refs/heads/main/")
     
     if not os.path.isfile("version.txt"):
@@ -90,4 +98,59 @@ if __name__ == "__main__":
 
         update = version(local_version)
         updater.run_update(index_url) if update else None
-        print(f"{Fore.RED}L{ORANGE}G{Fore.YELLOW}B{Fore.GREEN}T{Fore.BLUE}Q{PURPLE}u{Fore.RED}i{ORANGE}f{Fore.YELLOW}y {Fore.GREEN}is up to date. Current version: {local_version}") if update is None else None
+        print(f"{Fore.RED}L{ORANGE}G{Fore.YELLOW}B{Fore.GREEN}T{Fore.BLUE}Q{PURPLE}u{Fore.RED}i{ORANGE}f{Fore.YELLOW}y {Fore.GREEN}is up to date. Current version: {local_version}\n") if update is None else None
+        time.sleep(1)
+
+    """
+    Actions
+    """
+    
+    #os.system("cls") if os.name == "nt" else os.system("clear")
+
+    action = inquirer.select(
+        message="Select an action:",
+        choices=[
+            "LGBTQuify",
+            "Repair",
+            "Uninstall",
+            Separator(),
+            Choice(value=None, name="Exit")
+        ],
+    ).execute()
+
+    exit(0) if action == None else None
+
+    if action == "Repair":
+        updater = LGBTQUifyUpdater(base_url="https://raw.githubusercontent.com/EscapedShadows/LGBTQuify/refs/heads/main/")
+        index_url = updater.base_url + "index.json"
+        updater.run_update(index_url)
+    
+    if action == "Uninstall":
+        files = [
+            "LICENSE",
+            "README.md",
+            "version.txt"
+        ]
+        folders = [
+            "modules",
+            "static",
+            "scripts",
+            "flags",
+            "ascii"
+        ]
+
+        for file in files:
+            try:
+                print(f"{Fore.YELLOW}Removing {file}")
+                os.remove(file)
+                print(f"{Fore.GREEN}Removed {file}")
+            except OSError as e:
+                updater.fatal_error(f"Failed to delete {file}", e)
+
+        for folder in folders:
+            try:
+                print(f"{Fore.YELLOW}Removing {folder}")
+                shutil.rmtree(folder)
+                print(f"{Fore.GREEN}Removed {folder}")
+            except OSError as e:
+                updater.fatal_error(f"Failed to delete {file}", e)
