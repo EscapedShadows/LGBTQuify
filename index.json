@@ -17,6 +17,8 @@
         "flags/rainbow_flag.svg",
         "flags/transgender.svg",
 
-        "README"
+        "modules/version.py",
+
+        "static/flags.py"
     ]
 }
