@@ -1,7 +1,7 @@
 import requests
 from packaging.version import Version
 
-def updater(local):
+def version(local):
     local_version = Version(local)
     github_version = Version(requests.get("https://raw.githubusercontent.com/EscapedShadows/LGBTQuify/refs/heads/main/version.txt").text)
 
@@ -13,3 +13,4 @@ def updater(local):
         install = True if install.lower() == "y" else False
 
         return install
+    return None
