@@ -1,5 +1,8 @@
 import requests
 from packaging.version import Version
+from colorama import Fore, init
+
+init(autoreset=True)
 
 def version(local):
     local_version = Version(local)
@@ -7,9 +10,9 @@ def version(local):
 
     if github_version > local_version:
         print("="*10)
-        print("Update available!")
+        print(f"{Fore.GREEN}Update available!")
         print("="*10)
-        install = input("Would you like to install the update? (y/n): ")
+        install = input(f"{Fore.YELLOW}Would you like to install the update? (y/n): ")
         install = True if install.lower() == "y" else False
 
         return install
