@@ -1,15 +1,16 @@
 {
-    "folders": {
-        "flags": "flags"
-    },
+    "folders": [
+        "flags"
+    ],
 
-    "files": {
-        "version.txt": "version.txt",
-        "flags/asexual.svg": "flags/asexual.svg",
-        "flags/bisexual.svg": "flags/bisexual.svg",
-        "flags/non_binary.svg": "flags/non_binary.svg",
-        "flags/pansexual.svg": "flags/pansexual.svg",
-        "flags/rainbow_flag.svg": "flags/rainbow_flag.svg",
-        "flags/transgender.svg": "flags/transgender.svg"
-    }
+    "files": [
+        "version.txt",
+        "flags/asexual.svg",
+        "flags/bisexual.svg",
+        "flags/non_binary.svg",
+        "flags/pansexual.svg",
+        "flags/rainbow_flag.svg",
+        "flags/transgender.svg",
+        "flags/"
+    ]
 }
