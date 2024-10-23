@@ -18,6 +18,7 @@
         "flags/transgender.svg",
 
         "modules/version.py",
+        "modules/change_flags.py",
 
         "static/flags.py"
     ]

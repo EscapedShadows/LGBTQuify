@@ -2,8 +2,9 @@ from InquirerPy import inquirer
 from InquirerPy.validator import EmptyInputValidator
 
 class FlagChanger():
-    def __init__(self, flags: dict):
+    def __init__(self, flags: dict, settings):
         self.flags = flags
+        self.settings = settings
     
     def select_flags(self):
         self.num_flags = inquirer.number(
@@ -24,5 +25,7 @@ class FlagChanger():
             invalid_message=f"Please select {self.num_flags} flags",
             max_height="70%"
         ).execute()
+
+        self.settings.set_setting({"key": "selectedFlags", "value": flags})
 
         return flags

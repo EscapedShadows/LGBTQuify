@@ -66,8 +66,52 @@ from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 import time
 import shutil
+import json
+from json import JSONDecodeError
 
 init(autoreset=True)
+
+class Settings:
+    def __init__(self):
+        """
+        Initialize the Settings object and load settings from the JSON file.
+        """
+        self.reload()
+
+    def write_settings(self):
+        """
+        Save the current settings to the JSON file.
+        """
+        settings = self.settings  # Get the current settings
+        with open("settings.json", "w") as f:  # Open file for writing
+            json.dump(settings, f, indent=4)  # Write settings in JSON format
+
+    def reload(self):
+        """
+        Load settings from the JSON file.
+        If the file doesn't exist or contains invalid JSON, initialize an empty settings dictionary.
+        """
+        with open("settings.json", "r") as f:  # Open file for reading
+            try:
+                settings = json.load(f)  # Load settings from JSON
+            except json.JSONDecodeError:  # Handle JSON errors
+                settings = {}  # Set settings to an empty dictionary on error
+        self.settings = settings  # Store the loaded settings
+
+    def set_setting(self, setting):
+        """
+        Update a specific setting with the given key and value, and save changes.
+        """
+        settings = self.settings  # Get current settings
+        settings[setting["key"]] = setting["value"]  # Update the setting
+        self.write_settings()  # Save updated settings
+
+    def get_setting(self, setting):
+        """
+        Retrieve the value of a specific setting by key.
+        Returns None if the setting does not exist.
+        """
+        return self.settings.get(setting, None)  # Return the setting value or None
 
 class LGBTQUifyUpdater:
     def __init__(self, base_url):
@@ -221,6 +265,8 @@ if __name__ == "__main__":
     from static.flags import flags
     from modules.change_flags import FlagChanger
 
+    settings = Settings()
+
     available_flags = flags
 
     action = inquirer.select(
@@ -234,4 +280,6 @@ if __name__ == "__main__":
         ],
     ).execute()
 
-    
+    if action == "Change Flag(s)":
+        flag_changer = FlagChanger(flags, settings)
+        flag_changer.select_flags()
