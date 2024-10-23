@@ -1,8 +1,67 @@
-import os
+import subprocess
 import sys
+
+class PackageChecker:
+    def __init__(self, required_packages):
+        """
+        Initialize with a list of required packages.
+        """
+        self.required_packages = required_packages
+        self.installed_packages = self.list_installed_packages()
+
+    def list_installed_packages(self):
+        """
+        Use pip to list all installed packages.
+        Returns a list of installed package names.
+        """
+        try:
+            result = subprocess.run(['pip', 'list'], capture_output=True, text=True)
+            if result.returncode == 0:
+                # Split the output into lines and extract package names (skipping headers)
+                packages = [line.split()[0].lower() for line in result.stdout.split('\n')[2:] if line]
+                return packages
+            else:
+                print(f"Error fetching installed packages: {result.stderr}")
+                return []
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return []
+
+    def check_missing_packages(self):
+        """
+        Check for missing packages by comparing installed packages with required ones.
+        Returns a list of missing packages.
+        """
+        return [pkg for pkg in self.required_packages if pkg.lower() not in self.installed_packages]
+
+    def install_packages(self, packages):
+        """
+        Install the provided list of packages using pip with the --break-system-packages flag.
+        """
+        for pkg in packages:
+            print(f"Installing {pkg}...")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", pkg, "--break-system-packages"])
+
+    def ensure_packages(self):
+        """
+        Check for missing packages and install them if needed.
+        """
+        missing_packages = self.check_missing_packages()
+        if not missing_packages:
+            print("All required packages are installed!")
+        else:
+            print("Missing packages found. Installing...")
+            self.install_packages(missing_packages)
+            print("All required packages are now installed!")
+
+required = ["requests", "colorama", "InquirerPy", "packaging"]
+checker = PackageChecker(required)
+checker.ensure_packages()
+
+import os
 import requests
 from colorama import Fore, init
-from InquirerPy import prompt, inquirer
+from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 import time
@@ -124,6 +183,7 @@ if __name__ == "__main__":
         updater = LGBTQUifyUpdater(base_url="https://raw.githubusercontent.com/EscapedShadows/LGBTQuify/refs/heads/main/")
         index_url = updater.base_url + "index.json"
         updater.run_update(index_url)
+        exit()
     
     if action == "Uninstall":
         files = [
@@ -146,6 +206,7 @@ if __name__ == "__main__":
                 print(f"{Fore.GREEN}Removed {file}")
             except OSError as e:
                 updater.fatal_error(f"Failed to delete {file}", e)
+                exit(1)
 
         for folder in folders:
             try:
@@ -154,3 +215,23 @@ if __name__ == "__main__":
                 print(f"{Fore.GREEN}Removed {folder}")
             except OSError as e:
                 updater.fatal_error(f"Failed to delete {file}", e)
+                exit(1)
+        exit(0)
+
+    from static.flags import flags
+    from modules.change_flags import FlagChanger
+
+    available_flags = flags
+
+    action = inquirer.select(
+        message="Select an action:",
+        choices=[
+            "Change Flag(s)",
+            "Apply Flag(s)",
+            "Remove",
+            Separator(),
+            Choice(value=None, name="Exit")
+        ],
+    ).execute()
+
+    
